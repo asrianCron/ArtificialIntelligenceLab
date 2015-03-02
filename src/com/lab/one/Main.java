@@ -51,10 +51,21 @@ public class Main {
 		}
 	}
 	
-	public static Grid doMove(Grid originalGrid, Move move){
+	public static Grid doMove(Node current, Move move){
+		Node parent = current.getParent();
+		if(parent != null && !parent.getMove().equals(move)){
+			Grid state = new Grid(current.getCurrentState());
+			int[][] stateGrid = state.getGrid();
+			Position from = move.getFrom();
+			Position to = move.getTo();
+			
+			int fromVal = stateGrid[from.getI()][from.getJ()];
+			int toVal = stateGrid[to.getI()][to.getJ()];
+			stateGrid[from.getI()][from.getJ()] = toVal;
+			stateGrid[to.getI()][to.getJ()] = fromVal;
+			return state;
+		}
 		return null;
-		
-		
 	}
 	
 	public static List<Move> getPossibleMoves(Grid state) {
