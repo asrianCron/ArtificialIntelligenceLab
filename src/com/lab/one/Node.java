@@ -60,7 +60,48 @@ public class Node {
 
 	@Override
 	public String toString() {
-		return "Node [currentState=" + currentState + ", parent=" + parent + ", move=" + move + ", cost=" + cost + "]";
+//		return "Node\n##currentState=\n" + currentState + "\n##parent=\n" + parent + "\n##move=\n" + move + "\n##cost=\n" + cost + "\n]";
+		return "Node\n##currentState=\n" + currentState  + move + "\n##cost=" + cost;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+//		result = prime * result + cost;
+		result = prime * result + ((currentState == null) ? 0 : currentState.hashCode());
+//		result = prime * result + ((move == null) ? 0 : move.hashCode());
+//		result = prime * result + ((parent == null) ? 0 : parent.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Node other = (Node) obj;
+//		if (cost != other.cost)
+//			return false;
+		if (currentState == null) {
+			if (other.currentState != null)
+				return false;
+		} else if (!currentState.equals(other.currentState))
+			return false;
+//		if (move == null) {
+//			if (other.move != null)
+//				return false;
+//		} else if (!move.equals(other.move))
+//			return false;
+//		if (parent == null) {
+//			if (other.parent != null)
+//				return false;
+//		} else if (!parent.equals(other.parent))
+//			return false;
+		return true;
 	}
 	
 	

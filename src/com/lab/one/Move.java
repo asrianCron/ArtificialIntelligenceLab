@@ -11,6 +11,12 @@ public class Move {
 		this.cost = cost;
 	}
 	
+	public Move() {
+		this.from = new Position();
+		this.to = new Position();
+		this.cost = 0;
+	}
+
 	public Position getFrom() {
 		return from;
 	}

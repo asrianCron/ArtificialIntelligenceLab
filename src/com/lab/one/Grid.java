@@ -71,9 +71,15 @@ public class Grid {
 	}
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + Arrays.hashCode(numbers);
+		int result = 0;
+		int count = 1;
+		for(int i=0;i<this.numbers.length;i++){
+			for(int j=0;j<this.numbers[i].length;j++){
+				result += this.numbers[i][j] * count;
+				count = count * 10;
+			}
+		}
+        
 		return result;
 	}
 	@Override
