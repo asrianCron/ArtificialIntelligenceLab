@@ -30,7 +30,7 @@ public class Position {
 	}
 	@Override
 	public String toString() {
-		return "Pos [i=" + i + ", j=" + j + "]";
+		return "Pos [i=" + (i + 1) + ", j=" + (j + 1) + "]";
 	}
 	@Override
 	public int hashCode() {

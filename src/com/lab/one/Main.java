@@ -1,5 +1,6 @@
 package com.lab.one;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,38 +20,86 @@ import java.util.Set;
  * 7 8 
  * Pentru spatiul alb folosesc numarul -1
  * Intai se verifica daca puzzle-ul are o rezolvare valida
- * Al doilea pas este de a calcula arborele de miscari, incerc sa evit miscari duplicate
+ * Al doilea pas este de a calcula arborele de miscari, incercand sa evit miscari duplicate
  * 
  * 
  */
 public class Main {
 
 	public static void main(String[] args) {
-		String filePath = "res/puzzle.txt";
-		if (args.length >= 1) {
-			filePath = args[0];
+		String puzzlePath = "res/puzzle.txt";
+		String solutionPath = "res/solution.txt";
+		String solutionOutputPath = "res/solution_.txt";
+		int times = 0;
+		if (args.length == 2) {
+			puzzlePath = args[0];
+			solutionPath = args[1];
 		}
-		Path puzzlePath = Paths.get(filePath);
-		int[][] nrs = null;
-		if (Files.exists(puzzlePath)) {
-			nrs = getGrid(puzzlePath);
-		} else {
-			System.out.println("Puzzle input file doesn't exist, exiting");
-			return;
-		}
-		Grid initialPuzzle = new Grid(nrs);
-		Grid solution = new Grid(getGrid(Paths.get("res/solution.txt")));
+		Grid initialPuzzle = new Grid(getPuzzleGrid(puzzlePath));
+		Grid solution = new Grid(getPuzzleGrid(solutionPath));
+		
+//		initialPuzzle = mixItUp(solution, times);
+		
 		if (isSolvable(initialPuzzle)) {
-			System.out.println("Puzzle solvable, searching for a solution...");
-			System.out.println();
+			try {
+				if(Files.exists(Paths.get(solutionOutputPath))){
+					Files.delete(Paths.get(solutionOutputPath));
+				}
+				Files.createFile(Paths.get(solutionOutputPath));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			BufferedWriter writer = null;
+			try {
+				writer = Files.newBufferedWriter(Paths.get(solutionOutputPath));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			System.out.println("Puzzle solvable, searching for a solution...(" + times + " random moves to start with)\n");
+			write(writer, "Puzzle solvable, searching for a solution...(" + times + " random moves to start with)\n");
 			Node initialNode = new Node(initialPuzzle, null, null, 0);
 			Set<Node> closed = new HashSet<Node>();
 			Deque<Node> fringe = new ArrayDeque<Node>();
 			fringe.add(initialNode);
 			
 			Node solutionNode = graphSearch(solution, closed, fringe);
-//			
-			System.out.println("Solution found: \n" + solutionNode);
+			
+			System.out.println("Solution found: \n");
+			write(writer, "Solution found: \n");
+			
+			Deque<Node> solutionDeq = new ArrayDeque<Node>();
+			
+			Node sol = solutionNode;
+			
+			while(sol != null){
+				solutionDeq.add(sol);
+				sol = sol.getParent();
+			}
+			
+//			while(!solutionDeq.isEmpty()){
+//				Node last = solutionDeq.removeLast();
+//				System.out.println(last);
+//				System.out.println(last.getMove());
+//			}
+			
+			while(!solutionDeq.isEmpty()){
+				Node last = solutionDeq.removeLast();
+
+				write(writer, last.toString());
+				write(writer, (last.getMove() == null) ? "null" : last.getMove().toString());
+
+				System.out.println(last);
+				System.out.println(last.getMove());
+			}
+			
+			try {
+				writer.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
 //			System.out.println("FRINGE:");
 //			System.out.println(fringe);
 //			System.out.println("CLOSED:");
@@ -61,6 +110,60 @@ public class Main {
 		}
 	}
 	
+	
+	/**
+	 * convenience function, write line to opened file
+	 * @param writer
+	 * @param str
+	 */
+	public static void write(BufferedWriter writer, String str){
+		try {
+			writer.write(str + "\n");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * Apply a random number of available moves to a grid state
+	 * @param originalGrid
+	 * @param times
+	 * @return
+	 */
+	public static Grid mixItUp(Grid originalGrid, int times){
+		Grid result = new Grid(originalGrid);
+		for(int i=0;i<times;i++){
+			List<Move> possibleMoves = getPossibleMoves(result);
+			result = doMove(result, possibleMoves.get(getRandInt(0, possibleMoves.size() - 1)));
+		}
+		return result;
+	}
+	
+	
+	/**
+	 * Returns a multidimensional array containing the puzzle state, from file
+	 * @param path
+	 * @return
+	 */
+	public static int[][] getPuzzleGrid(String path){
+		Path puzzlePath = Paths.get(path);
+		int[][] result = null;
+		if (Files.exists(puzzlePath)) {
+			result = getGrid(puzzlePath);
+			return result;
+		} else {
+			System.out.println("Puzzle input file doesn't exist, exiting");
+			return null;
+		}
+	}
+	/**
+	 * Current algorith for finding solution, uses Graph-Search strategy for expanding states
+	 * @param solution
+	 * @param closed
+	 * @param fringe
+	 * @return
+	 */
 	public static Node graphSearch(Grid solution, Set<Node> closed, Deque<Node> fringe){
 		while(!fringe.isEmpty()){
 			Node currentNode = fringe.removeFirst();
@@ -79,7 +182,12 @@ public class Main {
 		return null;
 	}
 	
-	
+	/**
+	 * If any of the states from the given set is a solution, returns that solution
+	 * @param currentStates
+	 * @param solution
+	 * @return
+	 */
 	public static Node getSolution(Set<Node> currentStates, Grid solution){
 //		System.out.println("Searching for solution in set: " + currentStates);
 		for(Node node : currentStates){
@@ -89,7 +197,12 @@ public class Main {
 		}
 		return null;
 	}
-	
+	/**
+	 * If any of the states from the given list is a solution, returns that solution
+	 * @param currentStates
+	 * @param solution
+	 * @return
+	 */
 	public static Node getSolution(List<Node> currentStates, Grid solution){
 		for(Node node : currentStates){
 			if(node.getCurrentState().equals(solution)){
@@ -99,6 +212,11 @@ public class Main {
 		return null;
 	}
 	
+	/**
+	 * Expands the current node, using available moves. 
+	 * @param current
+	 * @return list containing all the expanded nodes
+	 */
 	public static List<Node> expand(Node current){
 		if(current != null){
 			List<Node> expandedNodes = new ArrayList<Node>();
@@ -117,6 +235,12 @@ public class Main {
 		return null;
 	}
 	
+	/**
+	 * Applies valid move to a grid state
+	 * @param current
+	 * @param move
+	 * @return
+	 */
 	public static Grid doMove(Grid current, Move move){
 //		Node parent = current.getParent();
 		if(current != null){
@@ -137,8 +261,10 @@ public class Main {
 	}
 	
 	
-	/*
+	/**
 	 * Returns a list containing all possible moves that can be done on the current grid
+	 * @param state
+	 * @return
 	 */
 	public static List<Move> getPossibleMoves(Grid state) {
 		List<Move> moves = new ArrayList<Move>();
@@ -171,6 +297,12 @@ public class Main {
 		return moves;
 	}
 
+	
+	/**
+	 * Checks if the current grid state is solvable, by looking at the number of inversion for this state
+	 * @param puzzle
+	 * @return
+	 */
 	public static boolean isSolvable(Grid puzzle) {
 		int size = puzzle.size();
 		if (size % 2 == 1) {
@@ -186,7 +318,13 @@ public class Main {
 
 		return false;
 	}
-
+	
+	
+	/**
+	 * 
+	 * @param puzzle
+	 * @return number of inversion in the current grid state
+	 */
 	public static int getInversions(Grid puzzle) {
 		int[] puzzleRow = puzzle.getGridAsRow();
 		int inversions = 0;
@@ -229,4 +367,15 @@ public class Main {
 		}
 		return numbers;
 	}
+	
+	/**
+	 * Returns a random integer, including the given parameters
+	 * @param min
+	 * @param max
+	 * @return
+	 */
+	public static int getRandInt(int min, int max) {
+		return (int) Math.round(Math.random() * (max - min) + min);
+	}
+	
 }

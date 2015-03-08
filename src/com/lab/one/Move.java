@@ -44,7 +44,7 @@ public class Move {
 
 	@Override
 	public String toString() {
-		return "##Move [from=" + from + ", to=" + to + ", cost=" + cost + "]##";
+		return "##Move [from=" + to + ", to=" + from + ", cost=" + cost + "]##";
 	}
 
 	@Override

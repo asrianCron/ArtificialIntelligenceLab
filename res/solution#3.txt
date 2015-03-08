@@ -1,0 +1,137 @@
+Puzzle solvable, searching for a solution...(100 random moves to start with)
+
+Solution found: 
+
+
+   1    2    3    4 
+   5    6   11    7 
+   9   10   -1   15 
+  13   12    8   14 
+
+null
+
+   1    2    3    4 
+   5    6   11    7 
+   9   10   15   -1 
+  13   12    8   14 
+
+##Move [from=Pos [i=3, j=3], to=Pos [i=3, j=4], cost=1]##
+
+   1    2    3    4 
+   5    6   11    7 
+   9   10   15   14 
+  13   12    8   -1 
+
+##Move [from=Pos [i=3, j=4], to=Pos [i=4, j=4], cost=1]##
+
+   1    2    3    4 
+   5    6   11    7 
+   9   10   15   14 
+  13   12   -1    8 
+
+##Move [from=Pos [i=4, j=4], to=Pos [i=4, j=3], cost=1]##
+
+   1    2    3    4 
+   5    6   11    7 
+   9   10   15   14 
+  13   -1   12    8 
+
+##Move [from=Pos [i=4, j=3], to=Pos [i=4, j=2], cost=1]##
+
+   1    2    3    4 
+   5    6   11    7 
+   9   -1   15   14 
+  13   10   12    8 
+
+##Move [from=Pos [i=4, j=2], to=Pos [i=3, j=2], cost=1]##
+
+   1    2    3    4 
+   5    6   11    7 
+   9   15   -1   14 
+  13   10   12    8 
+
+##Move [from=Pos [i=3, j=2], to=Pos [i=3, j=3], cost=1]##
+
+   1    2    3    4 
+   5    6   11    7 
+   9   15   14   -1 
+  13   10   12    8 
+
+##Move [from=Pos [i=3, j=3], to=Pos [i=3, j=4], cost=1]##
+
+   1    2    3    4 
+   5    6   11    7 
+   9   15   14    8 
+  13   10   12   -1 
+
+##Move [from=Pos [i=3, j=4], to=Pos [i=4, j=4], cost=1]##
+
+   1    2    3    4 
+   5    6   11    7 
+   9   15   14    8 
+  13   10   -1   12 
+
+##Move [from=Pos [i=4, j=4], to=Pos [i=4, j=3], cost=1]##
+
+   1    2    3    4 
+   5    6   11    7 
+   9   15   -1    8 
+  13   10   14   12 
+
+##Move [from=Pos [i=4, j=3], to=Pos [i=3, j=3], cost=1]##
+
+   1    2    3    4 
+   5    6   11    7 
+   9   -1   15    8 
+  13   10   14   12 
+
+##Move [from=Pos [i=3, j=3], to=Pos [i=3, j=2], cost=1]##
+
+   1    2    3    4 
+   5    6   11    7 
+   9   10   15    8 
+  13   -1   14   12 
+
+##Move [from=Pos [i=3, j=2], to=Pos [i=4, j=2], cost=1]##
+
+   1    2    3    4 
+   5    6   11    7 
+   9   10   15    8 
+  13   14   -1   12 
+
+##Move [from=Pos [i=4, j=2], to=Pos [i=4, j=3], cost=1]##
+
+   1    2    3    4 
+   5    6   11    7 
+   9   10   -1    8 
+  13   14   15   12 
+
+##Move [from=Pos [i=4, j=3], to=Pos [i=3, j=3], cost=1]##
+
+   1    2    3    4 
+   5    6   -1    7 
+   9   10   11    8 
+  13   14   15   12 
+
+##Move [from=Pos [i=3, j=3], to=Pos [i=2, j=3], cost=1]##
+
+   1    2    3    4 
+   5    6    7   -1 
+   9   10   11    8 
+  13   14   15   12 
+
+##Move [from=Pos [i=2, j=3], to=Pos [i=2, j=4], cost=1]##
+
+   1    2    3    4 
+   5    6    7    8 
+   9   10   11   -1 
+  13   14   15   12 
+
+##Move [from=Pos [i=2, j=4], to=Pos [i=3, j=4], cost=1]##
+
+   1    2    3    4 
+   5    6    7    8 
+   9   10   11   12 
+  13   14   15   -1 
+
+##Move [from=Pos [i=3, j=4], to=Pos [i=4, j=4], cost=1]##

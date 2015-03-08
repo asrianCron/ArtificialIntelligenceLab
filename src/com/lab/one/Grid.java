@@ -7,9 +7,13 @@ public class Grid {
 	private int size;
 	private int blank = -1;
 	private Position blankPos;
+	
 	public Grid(){
 		this.numbers = new int[0][0];
+		this.size = 0;
+		this.blankPos = new Position(0,0);
 	}
+	
 	public Grid(int[][] arg){
 		this.numbers = arg;
 		this.size = arg.length;
@@ -23,13 +27,8 @@ public class Grid {
 		for(int i=0;i<this.numbers.length;i++){
 			this.numbers[i] = new int[arg.size];
 		}
-//		for(int i=0;i<arg.size();i++){
-//			System.arraycopy(arg.getGrid()[i], 0, this.numbers[i], 0, arg.size());
-//		}
 		for(int i=0;i<arg.size();i++){
-			for(int j=0;j<arg.size();j++){
-				this.numbers[i][j] = arg.getGrid()[i][j];
-			}
+			System.arraycopy(arg.getGrid()[i], 0, this.numbers[i], 0, arg.size());
 		}
 	}
 	
@@ -47,7 +46,7 @@ public class Grid {
 	}
 	
 	public Position getBlankPosition(){
-//		if(this.blankPos == null){
+//		if(this.blankPos == null){ // big mistake
 			for(int i=0;i<numbers.length;i++){
 				for(int j=0;j<numbers[i].length;j++){
 					if(numbers[i][j] == blank){
@@ -73,14 +72,14 @@ public class Grid {
 		StringBuffer bfr = new StringBuffer();
 		for(int i=0;i<numbers.length;i++){
 			for(int j=0;j<numbers[i].length;j++){
-				bfr.append(numbers[i][j] + " ");
+				bfr.append(String.format("%4d", numbers[i][j]) + " ");
 			}
 			bfr.append("\n");
 		}
 		return bfr.toString();
 	}
 	@Override
-	public int hashCode() {
+	public int hashCode() { //custom hash code, not sure if it has collisions yet
 		final int prime = 31;
 		int result = 1;
 		int exp = 1;
