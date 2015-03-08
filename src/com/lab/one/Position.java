@@ -1,17 +1,20 @@
 package com.lab.one;
 
 public class Position {
-	public int i;
-	public int j;
+	private int i;
+	private int j;
 	
 	public Position(int i, int j) {
-		super();
 		this.i = i;
 		this.j = j;
 	}
 	public Position() {
 		this.i = 0;
 		this.j = 0;
+	}
+	public Position(Position other){
+		this.i = other.getI();
+		this.j = other.getJ();
 	}
 	public int getI() {
 		return i;

@@ -20,8 +20,16 @@ public class Grid {
 		this.blank = arg.getBlank();
 		this.blankPos = arg.getBlankPosition();
 		this.numbers = new int[arg.size()][arg.size()];
+		for(int i=0;i<this.numbers.length;i++){
+			this.numbers[i] = new int[arg.size];
+		}
+//		for(int i=0;i<arg.size();i++){
+//			System.arraycopy(arg.getGrid()[i], 0, this.numbers[i], 0, arg.size());
+//		}
 		for(int i=0;i<arg.size();i++){
-			System.arraycopy(arg.getGrid()[i], 0, this.numbers[i], 0, arg.size());
+			for(int j=0;j<arg.size();j++){
+				this.numbers[i][j] = arg.getGrid()[i][j];
+			}
 		}
 	}
 	
@@ -31,13 +39,15 @@ public class Grid {
 	public int[][] getGrid(){
 		return numbers;
 	}
-	
+	public void setGrid(int[][] arg){
+		this.numbers = arg;
+	}
 	public int getBlank(){
 		return blank;
 	}
 	
 	public Position getBlankPosition(){
-		if(this.blankPos == null){
+//		if(this.blankPos == null){
 			for(int i=0;i<numbers.length;i++){
 				for(int j=0;j<numbers[i].length;j++){
 					if(numbers[i][j] == blank){
@@ -46,8 +56,8 @@ public class Grid {
 				}
 			}
 			return this.blankPos;
-		}
-		return blankPos;
+//		}
+//		return blankPos;
 	}
 	
 	public int[] getGridAsRow(){
@@ -71,15 +81,16 @@ public class Grid {
 	}
 	@Override
 	public int hashCode() {
-		int result = 0;
-		int count = 1;
-		for(int i=0;i<this.numbers.length;i++){
-			for(int j=0;j<this.numbers[i].length;j++){
-				result += this.numbers[i][j] * count;
-				count = count * 10;
-			}
+		final int prime = 31;
+		int result = 1;
+		int exp = 1;
+		int[] row = this.getGridAsRow();
+		
+		for(int i=0;i<row.length;i++){
+//			result = result + prime * exp * row[i];
+			result = prime * result + exp * row[i];
+			exp *= 10;
 		}
-        
 		return result;
 	}
 	@Override
@@ -94,8 +105,7 @@ public class Grid {
 		if (!Arrays.deepEquals(numbers, other.numbers))
 			return false;
 		return true;
-	}
-	
+	}	
 	
 	
 }

@@ -43,51 +43,42 @@ public class Main {
 		if (isSolvable(initialPuzzle)) {
 			System.out.println("Puzzle solvable, searching for a solution...");
 			System.out.println();
-//			Node test1 = new Node(initialPuzzle, null, new Move(), 2);
-//			Node test4 = new Node(new Grid(initialPuzzle), null, null, 232);
-//			Node test2 = new Node(initialPuzzle, new Node(), null, 0);
-//			Node test3 = new Node(solution, new Node(), new Move(), 3);
-//			System.out.println(test1.hashCode());
-//			System.out.println(test4.hashCode());
-			
-//			System.out.println(getPossibleMoves(initialPuzzle));
-//			System.out.println(initialPuzzle);
 			Node initialNode = new Node(initialPuzzle, null, null, 0);
-//			System.out.println(initialNode);
-			Set<Node> expanded = new HashSet<Node>();
-			expanded.addAll(expand(initialNode));
-//			List<Node> expandedNodes = expand(initialNode);
-//			List<Node> auxNodes = new ArrayList<Node>();
+			Set<Node> closed = new HashSet<Node>();
+			Deque<Node> fringe = new ArrayDeque<Node>();
+			fringe.add(initialNode);
 			
-
-			Set<Node> auxNodes = new HashSet<Node>();
-			
-			for(int i=0;i<100000;i++){
-			Node solutionNode = null;
-//				while((solutionNode = getSolution(expanded, solution)) == null){
-					for(Node node : expanded){
-						auxNodes.addAll(expand(node));
-					}
-					expanded.addAll(auxNodes);
-					auxNodes.clear();
-//				}
-			}
-			
-			System.out.println(expanded.size());
-
-			
-			
-//			for(Node node : expandedNodes){
-//				System.out.println(node);
-//				System.out.println("Parent " + node.getParent());
-//				System.out.println();
-//			}
-			
+			Node solutionNode = graphSearch(solution, closed, fringe);
+//			
+			System.out.println("Solution found: \n" + solutionNode);
+//			System.out.println("FRINGE:");
+//			System.out.println(fringe);
+//			System.out.println("CLOSED:");
+//			System.out.println(closed);			
 		} else {
 			System.out.println("Puzzle unsolvable, exiting...");
 			return;
 		}
 	}
+	
+	public static Node graphSearch(Grid solution, Set<Node> closed, Deque<Node> fringe){
+		while(!fringe.isEmpty()){
+			Node currentNode = fringe.removeFirst();
+			if(currentNode.getCurrentState().equals(solution)){
+				return currentNode;
+			}
+			if(!closed.contains(currentNode)){
+//				System.out.println("EXPANDING:");
+//				System.out.println(currentNode);
+//				System.out.println("EXPANDED:");
+//				System.out.println(expand(currentNode));
+				closed.add(currentNode);
+				fringe.addAll(expand(currentNode));
+			}
+		}
+		return null;
+	}
+	
 	
 	public static Node getSolution(Set<Node> currentStates, Grid solution){
 //		System.out.println("Searching for solution in set: " + currentStates);
@@ -108,27 +99,6 @@ public class Main {
 		return null;
 	}
 	
-	public static List<Node> expandWithoutPastMove(Node current){
-		if(current != null){
-			List<Node> expandedNodes = new ArrayList<Node>();
-			List<Move> possibleMoves = getPossibleMoves(current.getCurrentState());
-			
-			for(Move move : possibleMoves){
-				if(!move.equals(current.getMove())){
-					Node node = new Node();
-					node.setCurrentState(doMove(current.getCurrentState(), move));
-					node.setParent(current);
-					node.setCost(current.getCost() + 1);
-					node.setMove(move);
-					expandedNodes.add(node);
-				}
-			}
-			return expandedNodes;
-		}
-		
-		return null;
-	}
-	
 	public static List<Node> expand(Node current){
 		if(current != null){
 			List<Node> expandedNodes = new ArrayList<Node>();
@@ -138,7 +108,7 @@ public class Main {
 				node.setCurrentState(doMove(current.getCurrentState(), move));
 				node.setParent(current);
 				node.setCost(current.getCost() + 1);
-				node.setMove(move);
+				node.setMove(new Move(move));
 				expandedNodes.add(node);
 			}
 			return expandedNodes;
@@ -150,8 +120,8 @@ public class Main {
 	public static Grid doMove(Grid current, Move move){
 //		Node parent = current.getParent();
 		if(current != null){
-			Grid state = new Grid(current);
-			int[][] stateGrid = state.getGrid();
+			Grid newGrid = new Grid(current);
+			int[][] stateGrid = newGrid.getGrid();
 			Position from = move.getFrom();
 			Position to = move.getTo();
 			
@@ -160,7 +130,8 @@ public class Main {
 			stateGrid[from.getI()][from.getJ()] = toVal;
 			stateGrid[to.getI()][to.getJ()] = fromVal;
 			
-			return state;
+			newGrid.setGrid(stateGrid); //??
+			return newGrid;
 		}
 		return null;
 	}
@@ -197,7 +168,6 @@ public class Main {
 //			System.out.println("LEFT");
 			moves.add(new Move(new Position(blank.getI(), blank.getJ() - 1), new Position(blank.getI(), blank.getJ()), 1));
 		}
-		// woooah, double rainbow
 		return moves;
 	}
 

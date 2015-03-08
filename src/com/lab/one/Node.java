@@ -61,7 +61,8 @@ public class Node {
 	@Override
 	public String toString() {
 //		return "Node\n##currentState=\n" + currentState + "\n##parent=\n" + parent + "\n##move=\n" + move + "\n##cost=\n" + cost + "\n]";
-		return "Node\n##currentState=\n" + currentState  + move + "\n##cost=" + cost;
+//		return "Node\n##currentState=\n" + currentState  + move + "\n##cost=" + cost;
+		return "\n" + currentState.toString();
 	}
 
 	@Override
