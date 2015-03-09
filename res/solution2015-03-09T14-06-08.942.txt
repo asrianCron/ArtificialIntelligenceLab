@@ -1,0 +1,25 @@
+Puzzle solvable, searching for a solution...(60 random moves to start with)
+
+Solution found: 
+
+
+   1    2    3    4 
+   5    6    7   -1 
+   9   10   11    8 
+  13   14   15   12 
+
+null
+
+   1    2    3    4 
+   5    6    7    8 
+   9   10   11   -1 
+  13   14   15   12 
+
+##Move [from=Pos [i=2, j=4], to=Pos [i=3, j=4], cost=1]##
+
+   1    2    3    4 
+   5    6    7    8 
+   9   10   11   12 
+  13   14   15   -1 
+
+##Move [from=Pos [i=3, j=4], to=Pos [i=4, j=4], cost=1]##

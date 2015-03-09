@@ -1,10 +1,12 @@
 package com.lab.one;
-/*
- * 	a.	Stare: reprezinta starea tablei de puzzle
+/**
+ *  a.	Stare: reprezinta starea tablei de puzzle
 	b.	Nod-parinte: reprezinta o legatura catre nodul corespunzator starii din care s-a generat starea curenta
 	c.	Actiune: actiunea care a fost aplicata starii parinte pentru a se ajunge in starea curenta
 	d	Path-cost: costul (numarul de mutari efectuate) pentru a se ajunge din starea initiala in starea curenta
 
+ * @author macro
+ *
  */
 public class Node {
 	private Grid currentState;
