@@ -38,7 +38,7 @@ public class Main {
 		tm = tm.replaceAll(":", "-");
 		String solutionOutputPath = "res/solution_" + tm + ".txt";
 
-		int times = 70;
+		int times = 90;
 		if (args.length == 2) {
 			puzzlePath = args[0];
 			solutionPath = args[1];
