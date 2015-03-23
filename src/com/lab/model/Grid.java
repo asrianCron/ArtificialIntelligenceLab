@@ -22,7 +22,7 @@ public class Grid {
 	public Grid(Grid arg) {
 		this.size = arg.size();
 		this.blank = arg.getBlank();
-		this.blankPos = arg.getBlankPosition();
+		this.blankPos = new Position(arg.getBlankPosition());
 		this.numbers = new int[arg.size()][arg.size()];
 		for (int i = 0; i < arg.size(); i++) {
 			System.arraycopy(arg.getGrid()[i], 0, this.numbers[i], 0, arg.size());
