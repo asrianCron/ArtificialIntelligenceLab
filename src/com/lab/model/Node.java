@@ -1,4 +1,4 @@
-package com.lab.one;
+package com.lab.model;
 /**
  *  a.	Stare: reprezinta starea tablei de puzzle
 	b.	Nod-parinte: reprezinta o legatura catre nodul corespunzator starii din care s-a generat starea curenta
@@ -8,11 +8,13 @@ package com.lab.one;
  * @author macro
  *
  */
-public class Node {
+public class Node implements Comparable<Node>{
 	private Grid currentState;
 	private Node parent;
 	private Move move;
 	private int cost;
+	public static Grid solutionState;
+	
 	
 	public Node(){
 		this.currentState = new Grid();
@@ -21,8 +23,14 @@ public class Node {
 		this.cost = 0;
 	}
 	
+	public Node(Node other){
+		this.cost = other.cost;
+		this.parent = other.parent;
+		this.currentState = new Grid(other.getCurrentState());
+		this.move = new Move(other.getMove());		
+	}
 	public Node(Grid state, Node parent, Move move, int cost){
-		this.currentState = state;
+		this.currentState = new Grid(state);
 		this.parent = parent;
 		this.move = move;
 		this.cost = cost;
@@ -59,6 +67,14 @@ public class Node {
 	public void setCost(int cost) {
 		this.cost = cost;
 	}
+	
+	public void setSolution(Grid solution){
+		Node.solutionState = solution;
+	}
+	
+	public Grid getSolutionState() {
+		return Node.solutionState;
+	}
 
 	@Override
 	public String toString() {
@@ -71,9 +87,9 @@ public class Node {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-//		result = prime * result + cost;
 		result = prime * result + ((currentState == null) ? 0 : currentState.hashCode());
-//		result = prime * result + ((move == null) ? 0 : move.hashCode());
+		result = prime * result + cost;
+		result = prime * result + ((move == null) ? 0 : move.hashCode());
 //		result = prime * result + ((parent == null) ? 0 : parent.hashCode());
 		return result;
 	}
@@ -105,6 +121,18 @@ public class Node {
 //		} else if (!parent.equals(other.parent))
 //			return false;
 		return true;
+	}
+
+	@Override
+	public int compareTo(Node o) {
+		if(Node.solutionState != null && this.currentState != null && o != null){
+//			System.out.println("COMPARING");
+			int currentCost = this.getCost() + Utils.getManhattan(this.currentState, Node.solutionState);
+			int otherCost = o.getCost() + Utils.getManhattan(o.getCurrentState(), Node.solutionState);
+			return Integer.compare(currentCost, otherCost);
+		}
+//		System.out.println("SOMETHING WENT TERRIBLY WRONG");
+		return 0;
 	}
 	
 	

@@ -1,4 +1,4 @@
-package com.lab.one;
+package com.lab.model;
 
 public class Move {
 	private Position from;
